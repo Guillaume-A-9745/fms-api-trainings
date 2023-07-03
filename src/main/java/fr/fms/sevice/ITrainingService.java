@@ -13,4 +13,5 @@ public interface ITrainingService {
     void deleteTraining(Long id);
 
     Optional<Training> readTraining(Long id);
+
 }

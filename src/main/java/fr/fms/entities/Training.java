@@ -18,6 +18,7 @@ public class Training  implements Serializable {
     private String name;
     private String description;
     private double price;
+    private String logo;
     private int quantity;
 
     @ManyToOne

@@ -1,6 +1,7 @@
 package fr.fms.web;
 
 import fr.fms.entities.Training;
+import fr.fms.exception.RecordNotFoundException;
 import fr.fms.sevice.ImplTrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class TrainingController {
     @PostMapping("/trainings")
     public ResponseEntity<Training> saveTraining(@RequestBody Training t){
         Training training = implTrainingService.saveTraining(t);
-        if(Objects.isNull(training)){
+        if(Objects.isNull(training)) {
             return ResponseEntity.noContent().build();
         }
         URI location = ServletUriComponentsBuilder
@@ -45,12 +46,24 @@ public class TrainingController {
     }
 
     @GetMapping("/trainings/{id}")
-    public ResponseEntity<Training> getTrainingById(@PathVariable("id") Long id){
-        Optional<Training> training = implTrainingService.readTraining(id);
-        if(training.isPresent()){
-            return new ResponseEntity<>(training.get(), HttpStatus.OK);
-        }
-        return null;
+    public Training getTrainingById(@PathVariable("id") Long id){
+        return implTrainingService.readTraining(id)
+                .orElseThrow( () -> new RecordNotFoundException("L'Id de formation " + id + " n'existe pas"));
     }
 
+    @PutMapping("/trainings/{id}")
+    public ResponseEntity<Training> updateTraining(@PathVariable Long id,@RequestBody Training upTraining){
+        Training training = (Training) implTrainingService.readTraining(id)
+                .orElseThrow( () -> new RecordNotFoundException("L'Id de formation " + id + " n'existe pas"));
+
+        // Mettre à jour les attributs de la formation existante
+        training.setName(upTraining.getName());
+        training.setDescription(upTraining.getDescription());
+        training.setPrice(upTraining.getPrice());
+
+        // Appeler la méthode de service pour mettre à jour la formation
+        Training updatedTraining = implTrainingService.saveTraining(training);
+
+        return ResponseEntity.ok(updatedTraining);
+    }
 }
