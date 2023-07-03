@@ -4,10 +4,15 @@ import fr.fms.dao.CategoryRepository;
 import fr.fms.dao.TrainingRepository;
 import fr.fms.entities.Category;
 import fr.fms.entities.Training;
+import fr.fms.security.entity.AppRole;
+import fr.fms.security.entity.AppUser;
+import fr.fms.security.service.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.ArrayList;
 
 @SpringBootApplication
 public class ApiTrainingsTestApplication implements CommandLineRunner {
@@ -16,6 +21,8 @@ public class ApiTrainingsTestApplication implements CommandLineRunner {
 	TrainingRepository trainingRepository;
 	@Autowired
 	CategoryRepository categoryRepository;
+	@Autowired
+	AccountServiceImpl accountService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiTrainingsTestApplication.class, args);
@@ -40,6 +47,15 @@ public class ApiTrainingsTestApplication implements CommandLineRunner {
 		trainingRepository.save(new Training(null, "Excel débutant", "Apprendre les bases d'éxcel sur 5 jours", 1500, "", 1,null));
 		trainingRepository.save(new Training(null, "Excel Avancé", "Apprendre les fonctions avancée sur 5 jours", 2000, "", 1,null));
 		trainingRepository.save(new Training(null, "Machine learning", "Découvrer le machine learning sur 4 jours", 1250, "", 1,null));
+
+		accountService.saveUser(new AppUser(null, "papa", "1234", new ArrayList<>()));
+		accountService.saveUser(new AppUser(null, "mama", "1234", new ArrayList<>()));
+		accountService.saveRole(new AppRole(null,"ADMIN"));
+		accountService.saveRole(new AppRole(null,"USER"));
+		accountService.addRoleToUser("papa", "ADMIN");
+		accountService.addRoleToUser("papa", "USER");
+		accountService.addRoleToUser("mama", "USER");
+
 
 	}
 }
