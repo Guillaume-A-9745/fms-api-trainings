@@ -60,6 +60,7 @@ public class TrainingController {
         training.setName(upTraining.getName());
         training.setDescription(upTraining.getDescription());
         training.setPrice(upTraining.getPrice());
+        training.setLogo(upTraining.getLogo());
 
         // Appeler la méthode de service pour mettre à jour la formation
         Training updatedTraining = implTrainingService.saveTraining(training);
