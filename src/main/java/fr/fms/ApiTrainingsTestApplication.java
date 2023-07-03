@@ -41,9 +41,5 @@ public class ApiTrainingsTestApplication implements CommandLineRunner {
 		trainingRepository.save(new Training(null, "Excel Avancé", "Apprendre les fonctions avancée sur 5 jours", 2000, "", 1,null));
 		trainingRepository.save(new Training(null, "Machine learning", "Découvrer le machine learning sur 4 jours", 1250, "", 1,null));
 
-
-
-
-
 	}
 }
