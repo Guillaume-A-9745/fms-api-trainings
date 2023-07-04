@@ -22,12 +22,10 @@ public class AccountServiceImpl implements AccountService{
     @Autowired
     private AppRoleRepository appRoleRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public AppUser saveUser(AppUser user) {
-        String hashPw = bCryptPasswordEncoder.encode(user.getPassword());
+        String hashPw = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(hashPw);
         log.info("Sauvegarde d'un nouvel utilisateur {} en base", user);
         return appUserRepository.save(user);
